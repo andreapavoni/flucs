@@ -1,0 +1,23 @@
+{
+  "name": "yafi",
+  "version": "0.0.1",
+  "description": "Simple wrapper for React Flux to dry things up ",
+  "main": "index.js",
+  "scripts": {
+    "compile": "babel --no-comments -m common -d lib/ src/",
+    "prepublish": "npm run compile"
+  },
+  "keywords": [
+    "flux",
+    "react"
+  ],
+  "author": "Andrea Pavoni",
+  "license": "MIT",
+  "devDependencies": {
+    "babel": "^5.6.23"
+  },
+  "dependencies": {
+    "core-js": "^0.9.18",
+    "flux": "^2.0.3"
+  }
+}
