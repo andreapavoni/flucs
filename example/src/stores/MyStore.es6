@@ -7,7 +7,8 @@ class MyStore {
 
     this.bindActions({
       'MyActions.updateName': 'updateName',
-      'MyActions.customName': 'doSomething'
+      'MyActions.customName': 'doSomething',
+      'CustomPrefix.anotherCustomName': 'doSomethingElse'
     })
   }
 
@@ -16,7 +17,11 @@ class MyStore {
   }
 
   doSomething(payload) {
-    console.log('custom store callback value: ', payload)
+    console.log('custom action callback value: ', payload)
+  }
+
+  doSomethingElse(payload) {
+    console.log('custom action callback with custom prefix value: ', payload)
   }
 }
 

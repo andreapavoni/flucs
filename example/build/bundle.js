@@ -20505,6 +20505,11 @@
 	          { onClick: _actionsMyActionsEs62['default'].anotherAction },
 	          'Text is: ',
 	          this.state.name
+	        ),
+	        _react2['default'].createElement(
+	          'button',
+	          { onClick: _actionsMyActionsEs62['default'].reallyAnotherAction },
+	          'Click Me!'
 	        )
 	      );
 	    }
@@ -20546,7 +20551,8 @@
 
 	    this.bindActions({
 	      'MyActions.updateName': 'updateName',
-	      'MyActions.customName': 'doSomething'
+	      'MyActions.customName': 'doSomething',
+	      'CustomPrefix.anotherCustomName': 'doSomethingElse'
 	    });
 	  }
 
@@ -20558,7 +20564,12 @@
 	  }, {
 	    key: 'doSomething',
 	    value: function doSomething(payload) {
-	      console.log('custom store callback value: ', payload);
+	      console.log('custom action callback value: ', payload);
+	    }
+	  }, {
+	    key: 'doSomethingElse',
+	    value: function doSomethingElse(payload) {
+	      console.log('custom action callback with custom prefix value: ', payload);
 	    }
 	  }]);
 
@@ -20595,6 +20606,11 @@
 	    key: 'anotherAction',
 	    value: function anotherAction(someValue) {
 	      this.dispatch('customName', someValue);
+	    }
+	  }, {
+	    key: 'reallyAnotherAction',
+	    value: function reallyAnotherAction(someValue) {
+	      this.dispatch('anotherCustomName', someValue, 'CustomPrefix');
 	    }
 	  }]);
 
@@ -24708,19 +24724,18 @@
 
 	    actions.forEach(function (action) {
 	      _this.__proto__[action] = function (payload) {
-	        _Dispatcher2['default'].dispatch({
-	          actionType: _this.constructor.name + '.' + action,
-	          payload: payload
-	        });
+	        _this.dispatch(action, payload);
 	      };
 	    });
 	  }
 	};
 
 	var protoMethods = {
-	  dispatch: function dispatch(action, payload) {
+	  dispatch: function dispatch(action, payload, namespace) {
+	    var prefix = !!namespace ? namespace : this.constructor.name;
+
 	    _Dispatcher2['default'].dispatch({
-	      actionType: this.constructor.name + '.' + action,
+	      actionType: prefix + '.' + action,
 	      payload: payload
 	    });
 	  }

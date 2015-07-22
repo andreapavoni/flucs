@@ -18,5 +18,8 @@ See [example](example/)
 ## TODO
 * tests
 * add _Usage_ to README
+* write more examples:
+  * in ES5
+  * [http://todomvc.com](http://todomvc.com) :-)
 * find a better name
 * _ideas and PRs are welcome_

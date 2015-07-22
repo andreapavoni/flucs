@@ -27,6 +27,7 @@ export default class App extends React.Component {
     return <div>
       <input type="text" placeholder="Enter some text here" value={this.state.name} name="url" onChange={MyActions.updateName} autofocus={true}></input>
       <span onClick={MyActions.anotherAction}>Text is: {this.state.name}</span>
+      <button onClick={MyActions.reallyAnotherAction}>Click Me!</button>
     </div>
   }
 }

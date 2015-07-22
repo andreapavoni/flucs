@@ -6,19 +6,19 @@ let prototypeMethods = {
   generateActions: function(...actions) {
     actions.forEach((action) => {
       this.__proto__[action] = (payload) => {
-        Dispatcher.dispatch({
-          actionType: `${this.constructor.name}.${action}`,
-          payload: payload
-        })
+        this.dispatch(action, payload)
       }
     })
   }
 }
 
 let protoMethods = {
-  dispatch: function(action, payload) {
+  dispatch: function(action, payload, namespace) {
+    // allow a different prefix/namespace rather than decorated-class name
+    let prefix = (!!namespace) ? namespace : this.constructor.name
+
     Dispatcher.dispatch({
-      actionType: `${this.constructor.name}.${action}`,
+      actionType: `${prefix}.${action}`,
       payload: payload
     })
   }
@@ -31,7 +31,7 @@ export default {
       protoMethods
     )
     Object.assign(klass.prototype, prototypeMethods)
-    
+
     let decorated = new klass()
     Object.keys(methods).forEach((method) => {
       decorated.__proto__[method] = methods[method].bind(decorated)
