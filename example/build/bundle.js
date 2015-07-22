@@ -20502,7 +20502,7 @@
 	        _react2['default'].createElement('input', { type: 'text', placeholder: 'Enter some text here', value: this.state.name, name: 'url', onChange: _actionsMyActionsEs62['default'].updateName, autofocus: true }),
 	        _react2['default'].createElement(
 	          'span',
-	          null,
+	          { onClick: _actionsMyActionsEs62['default'].anotherAction },
 	          'Text is: ',
 	          this.state.name
 	        )
@@ -20545,7 +20545,8 @@
 	    this.name = '';
 
 	    this.bindActions({
-	      'MyActions.updateName': 'updateName'
+	      'MyActions.updateName': 'updateName',
+	      'MyActions.customName': 'doSomething'
 	    });
 	  }
 
@@ -20553,6 +20554,11 @@
 	    key: 'updateName',
 	    value: function updateName(event) {
 	      return this.setState({ name: event.target.value });
+	    }
+	  }, {
+	    key: 'doSomething',
+	    value: function doSomething(payload) {
+	      console.log('custom store callback value: ', payload);
 	    }
 	  }]);
 
@@ -20572,16 +20578,28 @@
 	  value: true
 	});
 
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 	var _yafi = __webpack_require__(160);
 
-	var MyActions = function MyActions() {
-	  _classCallCheck(this, MyActions);
+	var MyActions = (function () {
+	  function MyActions() {
+	    _classCallCheck(this, MyActions);
 
-	  // super() // mandatory when extending from other classes
-	  this.generateActions('updateName');
-	};
+	    this.generateActions('updateName');
+	  }
+
+	  _createClass(MyActions, [{
+	    key: 'anotherAction',
+	    value: function anotherAction(someValue) {
+	      this.dispatch('customName', someValue);
+	    }
+	  }]);
+
+	  return MyActions;
+	})();
 
 	exports['default'] = _yafi.Actions.createActions(MyActions);
 	module.exports = exports['default'];
@@ -23987,14 +24005,14 @@
 	      bindActions: function bindActions(bindings) {
 	        var _this3 = this;
 
-	        _Dispatcher2['default'].register(function (action) {
+	        klass.dispatchToken = _Dispatcher2['default'].register(function (action) {
 	          var actionType = action.actionType;
 	          var payload = action.payload;
 
 	          _this3[bindings[actionType]](payload);
 	        });
-	      }
-	    });
+	      },
+	      dispatcher: _Dispatcher2['default'] });
 
 	    var decorated = new klass();
 	    Object.keys(this.decorators).forEach(function (decoration) {
@@ -24668,13 +24686,19 @@
 	  value: true
 	});
 
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 	var _Dispatcher = __webpack_require__(252);
 
 	var _Dispatcher2 = _interopRequireDefault(_Dispatcher);
 
-	exports['default'] = {
+	var _utils = __webpack_require__(257);
+
+	var utils = _interopRequireWildcard(_utils);
+
+	var prototypeMethods = {
 	  generateActions: function generateActions() {
 	    var _this = this;
 
@@ -24690,17 +24714,57 @@
 	        });
 	      };
 	    });
-	  },
+	  }
+	};
 
+	var protoMethods = {
+	  dispatch: function dispatch(action, payload) {
+	    _Dispatcher2['default'].dispatch({
+	      actionType: this.constructor.name + '.' + action,
+	      payload: payload
+	    });
+	  }
+	};
+
+	exports['default'] = {
 	  createActions: function createActions(klass) {
-	    Object.assign(klass.prototype, {
-	      generateActions: this.generateActions
+	    var methods = Object.assign(utils.getInstanceMethods(klass), protoMethods);
+	    Object.assign(klass.prototype, prototypeMethods);
+
+	    var decorated = new klass();
+	    Object.keys(methods).forEach(function (method) {
+	      decorated.__proto__[method] = methods[method].bind(decorated);
 	    });
 
-	    return new klass();
+	    return decorated;
 	  }
 	};
 	module.exports = exports['default'];
+
+/***/ },
+/* 257 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.getInstanceMethods = getInstanceMethods;
+	function NoopClass() {}
+
+	function getInstanceMethods(klass) {
+	  var excluded = Object.getOwnPropertyNames(NoopClass.prototype);
+	  var proto = klass.prototype;
+	  return Object.getOwnPropertyNames(proto).reduce(function (result, method) {
+	    if (excluded.indexOf(method) !== -1) {
+	      return result;
+	    }
+
+	    result[method] = proto[method];
+	    return result;
+	  }, {});
+	}
 
 /***/ }
 /******/ ]);

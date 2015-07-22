@@ -1,7 +1,9 @@
 # yafi: yet another Flux implementation
 
-* based on facebook's Flux Dispatcher
+* based on facebook [Flux](https://github.com/facebook/flux)
+* it supports `waitFor`
 * inspired by [Alt](https://alt.js.org)
+* less than 150 lines of code
 * written in ES6 ([ECMAScript 2015](http://www.ecma-international.org/ecma-262/6.0/index.html))
 
 ## WARNING:

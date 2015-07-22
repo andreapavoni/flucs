@@ -26,7 +26,7 @@ export default class App extends React.Component {
   render() {
     return <div>
       <input type="text" placeholder="Enter some text here" value={this.state.name} name="url" onChange={MyActions.updateName} autofocus={true}></input>
-      <span>Text is: {this.state.name}</span>
+      <span onClick={MyActions.anotherAction}>Text is: {this.state.name}</span>
     </div>
   }
 }

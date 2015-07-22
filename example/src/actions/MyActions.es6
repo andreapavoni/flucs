@@ -2,10 +2,13 @@ import {Actions} from 'yafi'
 
 class MyActions {
   constructor() {
-    // super() // mandatory when extending from other classes
     this.generateActions(
       'updateName'
     )
+  }
+
+  anotherAction(someValue) {
+    this.dispatch('customName', someValue)
   }
 }
 

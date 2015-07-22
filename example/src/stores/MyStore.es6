@@ -6,12 +6,17 @@ class MyStore {
     this.name = ''
 
     this.bindActions({
-      'MyActions.updateName': 'updateName'
+      'MyActions.updateName': 'updateName',
+      'MyActions.customName': 'doSomething'
     })
   }
 
   updateName(event) {
     return this.setState({name: event.target.value})
+  }
+
+  doSomething(payload) {
+    console.log('custom store callback value: ', payload)
   }
 }
 
