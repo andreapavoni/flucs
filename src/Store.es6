@@ -41,11 +41,14 @@ export default {
   createStore: function(klass) {
     Object.assign(klass.prototype, {
       bindActions: function(bindings) {
-        Dispatcher.register((action) => {
+        // later inside some store callback, you can use:
+        // this.Dispatcher.waitFor([AnotherStore.dispatchToken])
+        klass.dispatchToken = Dispatcher.register((action) => {
           let {actionType, payload} = action
           this[bindings[actionType]](payload)
         })
-      }
+      },
+      dispatcher: Dispatcher // exposed as this.dispatcher in decorated Stores
     })
 
     let decorated = new klass()
