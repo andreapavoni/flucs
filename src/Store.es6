@@ -37,7 +37,7 @@ let protoMethods = Object.assign({}, EventEmitter.prototype, {
   }
  })
 
- function parseBingindsTree(bindings) {
+ function parseBindingsTree(bindings) {
    let result = {}
    Object.keys(bindings).forEach((prefix) => {
      Object.keys(bindings[prefix]).forEach((action) => {
@@ -57,7 +57,7 @@ export default {
   createStore: function(klass) {
     Object.assign(klass.prototype, {
       bindActions: function(opts) {
-        let bindings = parseBingindsTree(opts)
+        let bindings = parseBindingsTree(opts)
 
         // later inside some store callback, you can use:
         // this.dispatcher.waitFor([AnotherStore.dispatchToken])

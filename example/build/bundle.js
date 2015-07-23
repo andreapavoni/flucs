@@ -20549,12 +20549,6 @@
 
 	    this.name = '';
 
-	    // this.bindActions({
-	    //   'MyActions.updateName': 'updateName',
-	    //   'MyActions.customName': 'doSomething',
-	    //   'CustomPrefix.anotherCustomName': 'doSomethingElse'
-	    // })
-
 	    this.bindActions({
 	      'MyActions': { // prefix
 	        'customName': 'doSomething', // 1:1 mapping
@@ -24023,7 +24017,7 @@
 	  }
 	});
 
-	function parseBingindsTree(bindings) {
+	function parseBindingsTree(bindings) {
 	  var result = {};
 	  Object.keys(bindings).forEach(function (prefix) {
 	    Object.keys(bindings[prefix]).forEach(function (action) {
@@ -24045,8 +24039,7 @@
 	      bindActions: function bindActions(opts) {
 	        var _this3 = this;
 
-	        var bindings = parseBingindsTree(opts);
-	        console.log('parsed bindings: ', bindings);
+	        var bindings = parseBindingsTree(opts);
 
 	        klass.dispatchToken = _Dispatcher2['default'].register(function (action) {
 	          var actionType = action.actionType;
