@@ -37,40 +37,39 @@ let protoMethods = Object.assign({}, EventEmitter.prototype, {
   }
  })
 
- function parseBindingsTree(bindings) {
-   let result = {}
-   Object.keys(bindings).forEach((prefix) => {
-     Object.keys(bindings[prefix]).forEach((action) => {
-       if (Array.isArray(bindings[prefix][action])) {
-         bindings[prefix][action].forEach((callback) => {
-           result[`${prefix}.${callback}`] = callback
-         })
-       } else {
-         result[`${prefix}.${action}`] = bindings[prefix][action]
-       }
-     })
+function parseBindingsTree(bindings) {
+ let result = {}
+ Object.keys(bindings).forEach((prefix) => {
+   Object.keys(bindings[prefix]).forEach((action) => {
+     if (Array.isArray(bindings[prefix][action])) {
+       bindings[prefix][action].forEach((callback) => {
+         result[`${prefix}.${callback}`] = callback
+       })
+     } else {
+       result[`${prefix}.${action}`] = bindings[prefix][action]
+     }
    })
-   return result
- }
+ })
+ return result
+}
 
-export default {
-  createStore: function(klass) {
-    Object.assign(klass.prototype, {
-      bindActions: function(opts) {
-        let bindings = parseBindingsTree(opts)
 
-        // later inside some store callback, you can use:
-        // this.dispatcher.waitFor([AnotherStore.dispatchToken])
-        klass.dispatchToken = Dispatcher.register((action) => {
-          let {actionType, payload} = action
-          this[bindings[actionType]](payload)
-        })
-      },
-      dispatcher: Dispatcher // exposed as this.dispatcher in decorated Stores
-    })
+export function createStore(klass) {
+  Object.assign(klass.prototype, {
+    bindActions: function(opts) {
+      let bindings = parseBindingsTree(opts)
 
-    let decorated = new klass()
-    Object.assign(decorated.__proto__, protoMethods)
-    return decorated
-  }
+      // later inside some store callback, you can use:
+      // this.dispatcher.waitFor([AnotherStore.dispatchToken])
+      klass.dispatchToken = Dispatcher.register((action) => {
+        let {actionType, payload} = action
+        this[bindings[actionType]](payload)
+      })
+    },
+    dispatcher: Dispatcher // exposed as this.dispatcher in stores
+  })
+
+  let decorated = new klass()
+  Object.assign(decorated.__proto__, protoMethods)
+  return decorated
 }

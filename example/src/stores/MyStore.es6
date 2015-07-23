@@ -1,5 +1,5 @@
 import MyActions from '../actions/MyActions.es6'
-import {Store} from 'yafi'
+import {createStore} from 'yafi'
 
 class MyStore {
   constructor() {
@@ -29,4 +29,4 @@ class MyStore {
   }
 }
 
-export default Store.createStore(MyStore)
+export default createStore(MyStore)

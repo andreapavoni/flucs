@@ -24,19 +24,17 @@ let protoMethods = {
   }
 }
 
-export default {
-  createActions: function(klass) {
-    let methods = Object.assign(
-      utils.getInstanceMethods(klass),
-      protoMethods
-    )
-    Object.assign(klass.prototype, prototypeMethods)
+export function createActions(klass) {
+  let methods = Object.assign(
+    utils.getInstanceMethods(klass),
+    protoMethods
+  )
+  Object.assign(klass.prototype, prototypeMethods)
 
-    let decorated = new klass()
-    Object.keys(methods).forEach((method) => {
-      decorated.__proto__[method] = methods[method].bind(decorated)
-    })
+  let decorated = new klass()
+  Object.keys(methods).forEach((method) => {
+    decorated.__proto__[method] = methods[method].bind(decorated)
+  })
 
-    return decorated
-  }
+  return decorated
 }

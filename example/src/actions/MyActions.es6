@@ -1,4 +1,4 @@
-import {Actions} from 'yafi'
+import {createActions} from 'yafi'
 
 class MyActions {
   constructor() {
@@ -16,4 +16,4 @@ class MyActions {
   }
 }
 
-export default Actions.createActions(MyActions)
+export default createActions(MyActions)

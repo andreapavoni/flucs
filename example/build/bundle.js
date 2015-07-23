@@ -20580,7 +20580,7 @@
 	  return MyStore;
 	})();
 
-	exports['default'] = _yafi.Store.createStore(MyStore);
+	exports['default'] = (0, _yafi.createStore)(MyStore);
 	module.exports = exports['default'];
 
 /***/ },
@@ -20621,7 +20621,7 @@
 	  return MyActions;
 	})();
 
-	exports['default'] = _yafi.Actions.createActions(MyActions);
+	exports['default'] = (0, _yafi.createActions)(MyActions);
 	module.exports = exports['default'];
 
 /***/ },
@@ -20631,9 +20631,9 @@
 	__webpack_require__(161);
 
 	module.exports = {
-	  Store: __webpack_require__(250),
-	  Actions: __webpack_require__(256),
-	  Dispatcher: __webpack_require__(252)
+	  createStore: __webpack_require__(250).createStore,
+	  createActions: __webpack_require__(256).createActions,
+	  Dispatcher: __webpack_require__(252).Dispatcher
 	};
 
 
@@ -23968,6 +23968,7 @@
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
+	exports.createStore = createStore;
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -24033,29 +24034,26 @@
 	  return result;
 	}
 
-	exports['default'] = {
-	  createStore: function createStore(klass) {
-	    Object.assign(klass.prototype, {
-	      bindActions: function bindActions(opts) {
-	        var _this3 = this;
+	function createStore(klass) {
+	  Object.assign(klass.prototype, {
+	    bindActions: function bindActions(opts) {
+	      var _this3 = this;
 
-	        var bindings = parseBindingsTree(opts);
+	      var bindings = parseBindingsTree(opts);
 
-	        klass.dispatchToken = _Dispatcher2['default'].register(function (action) {
-	          var actionType = action.actionType;
-	          var payload = action.payload;
+	      klass.dispatchToken = _Dispatcher2['default'].register(function (action) {
+	        var actionType = action.actionType;
+	        var payload = action.payload;
 
-	          _this3[bindings[actionType]](payload);
-	        });
-	      },
-	      dispatcher: _Dispatcher2['default'] });
+	        _this3[bindings[actionType]](payload);
+	      });
+	    },
+	    dispatcher: _Dispatcher2['default'] });
 
-	    var decorated = new klass();
-	    Object.assign(decorated.__proto__, protoMethods);
-	    return decorated;
-	  }
-	};
-	module.exports = exports['default'];
+	  var decorated = new klass();
+	  Object.assign(decorated.__proto__, protoMethods);
+	  return decorated;
+	}
 
 /***/ },
 /* 251 */
@@ -24719,6 +24717,7 @@
 	Object.defineProperty(exports, '__esModule', {
 	  value: true
 	});
+	exports.createActions = createActions;
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
 
@@ -24759,20 +24758,17 @@
 	  }
 	};
 
-	exports['default'] = {
-	  createActions: function createActions(klass) {
-	    var methods = Object.assign(utils.getInstanceMethods(klass), protoMethods);
-	    Object.assign(klass.prototype, prototypeMethods);
+	function createActions(klass) {
+	  var methods = Object.assign(utils.getInstanceMethods(klass), protoMethods);
+	  Object.assign(klass.prototype, prototypeMethods);
 
-	    var decorated = new klass();
-	    Object.keys(methods).forEach(function (method) {
-	      decorated.__proto__[method] = methods[method].bind(decorated);
-	    });
+	  var decorated = new klass();
+	  Object.keys(methods).forEach(function (method) {
+	    decorated.__proto__[method] = methods[method].bind(decorated);
+	  });
 
-	    return decorated;
-	  }
-	};
-	module.exports = exports['default'];
+	  return decorated;
+	}
 
 /***/ },
 /* 257 */
