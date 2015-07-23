@@ -6,9 +6,13 @@ class MyStore {
     this.name = ''
 
     this.bindActions({
-      'MyActions.updateName': 'updateName',
-      'MyActions.customName': 'doSomething',
-      'CustomPrefix.anotherCustomName': 'doSomethingElse'
+      'MyActions': { // prefix
+        'customName': 'doSomething', // 1:1 mapping
+        '*': ['updateName'] // auto mapping
+      },
+      'CustomPrefix': {
+        'anotherCustomName': 'doSomethingElse'
+      }
     })
   }
 

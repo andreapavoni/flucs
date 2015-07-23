@@ -20549,10 +20549,20 @@
 
 	    this.name = '';
 
+	    // this.bindActions({
+	    //   'MyActions.updateName': 'updateName',
+	    //   'MyActions.customName': 'doSomething',
+	    //   'CustomPrefix.anotherCustomName': 'doSomethingElse'
+	    // })
+
 	    this.bindActions({
-	      'MyActions.updateName': 'updateName',
-	      'MyActions.customName': 'doSomething',
-	      'CustomPrefix.anotherCustomName': 'doSomethingElse'
+	      'MyActions': { // prefix
+	        'customName': 'doSomething', // 1:1 mapping
+	        '*': ['updateName'] // auto mapping
+	      },
+	      'CustomPrefix': {
+	        'anotherCustomName': 'doSomethingElse'
+	      }
 	    });
 	  }
 
@@ -23973,53 +23983,70 @@
 
 	var _Dispatcher2 = _interopRequireDefault(_Dispatcher);
 
+	var protoMethods = Object.assign({}, _events.EventEmitter.prototype, {
+	  getState: function getState() {
+	    var _this = this;
+
+	    var state = {};
+	    Object.keys(this).forEach(function (prop) {
+	      if (prop !== 'state' || prop !== '_events') {
+	        state[prop] = _this[prop];
+	      }
+	    });
+	    return state;
+	  },
+
+	  setState: function setState(obj) {
+	    var _this2 = this;
+
+	    Object.keys(obj).forEach(function (prop) {
+	      _this2[prop] = obj[prop];
+	    });
+	    this.emitChange();
+	    return this;
+	  },
+
+	  changeEventName: function changeEventName() {
+	    return this.constructor.name + ' change';
+	  },
+
+	  emitChange: function emitChange() {
+	    this.emit(this.changeEventName());
+	  },
+
+	  addChangeListener: function addChangeListener(callback) {
+	    this.on(this.changeEventName(), callback);
+	  },
+
+	  removeChangeListener: function removeChangeListener(callback) {
+	    this.removeListener(this.changeEventName(), callback);
+	  }
+	});
+
+	function parseBingindsTree(bindings) {
+	  var result = {};
+	  Object.keys(bindings).forEach(function (prefix) {
+	    Object.keys(bindings[prefix]).forEach(function (action) {
+	      if (Array.isArray(bindings[prefix][action])) {
+	        bindings[prefix][action].forEach(function (callback) {
+	          result[prefix + '.' + callback] = callback;
+	        });
+	      } else {
+	        result[prefix + '.' + action] = bindings[prefix][action];
+	      }
+	    });
+	  });
+	  return result;
+	}
+
 	exports['default'] = {
-	  decorators: Object.assign({}, _events.EventEmitter.prototype, {
-	    getState: function getState() {
-	      var _this = this;
-
-	      var state = {};
-	      Object.keys(this).forEach(function (prop) {
-	        if (prop !== 'state' || prop !== '_events') {
-	          state[prop] = _this[prop];
-	        }
-	      });
-	      return state;
-	    },
-
-	    setState: function setState(obj) {
-	      var _this2 = this;
-
-	      Object.keys(obj).forEach(function (prop) {
-	        _this2[prop] = obj[prop];
-	      });
-	      this.emitChange();
-	      return this;
-	    },
-
-	    changeEventName: function changeEventName() {
-	      return this.constructor.name + ' change';
-	    },
-
-	    emitChange: function emitChange() {
-	      this.emit(this.changeEventName());
-	    },
-
-	    addChangeListener: function addChangeListener(callback) {
-	      this.on(this.changeEventName(), callback);
-	    },
-
-	    removeChangeListener: function removeChangeListener(callback) {
-	      this.removeListener(this.changeEventName(), callback);
-	    }
-	  }),
-
 	  createStore: function createStore(klass) {
-	    var _this4 = this;
-
 	    Object.assign(klass.prototype, {
-	      bindActions: function bindActions(bindings) {
+	      bindActions: function bindActions(opts) {
 	        var _this3 = this;
+
+	        var bindings = parseBingindsTree(opts);
+	        console.log('parsed bindings: ', bindings);
 
 	        klass.dispatchToken = _Dispatcher2['default'].register(function (action) {
 	          var actionType = action.actionType;
@@ -24031,9 +24058,7 @@
 	      dispatcher: _Dispatcher2['default'] });
 
 	    var decorated = new klass();
-	    Object.keys(this.decorators).forEach(function (decoration) {
-	      decorated.__proto__[decoration] = _this4.decorators[decoration];
-	    });
+	    Object.assign(decorated.__proto__, protoMethods);
 	    return decorated;
 	  }
 	};
