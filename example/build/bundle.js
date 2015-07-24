@@ -24032,10 +24032,7 @@
 	      var bindings = parseBindingsTree(opts);
 
 	      this.dispatchToken = _Dispatcher2['default'].register(function (action) {
-	        var actionType = action.actionType;
-	        var payload = action.payload;
-
-	        _this[bindings[actionType]](payload);
+	        _this[bindings[action.actionType]](action.payload);
 	      });
 	    }
 	  }, {

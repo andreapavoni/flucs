@@ -26,8 +26,7 @@ export default class Store extends EventEmitter {
     // later inside some store callback, you can use:
     // this.dispatcher.waitFor([AnotherStore.dispatchToken])
     this.dispatchToken = Dispatcher.register((action) => {
-      let {actionType, payload} = action
-      this[bindings[actionType]](payload)
+      this[bindings[action.actionType]](action.payload)
     })
   }
 
