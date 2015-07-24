@@ -70,6 +70,6 @@ export function createStore(klass) {
   })
 
   let decorated = new klass()
-  Object.assign(decorated.__proto__, protoMethods)
+  Object.assign(decorated, protoMethods)
   return decorated
 }

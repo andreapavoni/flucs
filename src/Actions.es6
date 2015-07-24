@@ -5,7 +5,7 @@ import * as utils from './utils'
 let prototypeMethods = {
   generateActions: function(...actions) {
     actions.forEach((action) => {
-      this.__proto__[action] = (payload) => {
+      this[action] = (payload) => {
         this.dispatch(action, payload)
       }
     })
@@ -33,7 +33,7 @@ export function createActions(klass) {
 
   let decorated = new klass()
   Object.keys(methods).forEach((method) => {
-    decorated.__proto__[method] = methods[method].bind(decorated)
+    decorated[method] = methods[method].bind(decorated)
   })
 
   return decorated

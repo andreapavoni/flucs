@@ -24051,7 +24051,7 @@
 	    dispatcher: _Dispatcher2['default'] });
 
 	  var decorated = new klass();
-	  Object.assign(decorated.__proto__, protoMethods);
+	  Object.assign(decorated, protoMethods);
 	  return decorated;
 	}
 
@@ -24740,7 +24740,7 @@
 	    }
 
 	    actions.forEach(function (action) {
-	      _this.__proto__[action] = function (payload) {
+	      _this[action] = function (payload) {
 	        _this.dispatch(action, payload);
 	      };
 	    });
@@ -24764,7 +24764,7 @@
 
 	  var decorated = new klass();
 	  Object.keys(methods).forEach(function (method) {
-	    decorated.__proto__[method] = methods[method].bind(decorated);
+	    decorated[method] = methods[method].bind(decorated);
 	  });
 
 	  return decorated;
