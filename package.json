@@ -4,8 +4,9 @@
   "description": "Simple wrapper for React Flux to dry things up ",
   "main": "index.js",
   "scripts": {
-    "compile": "babel --no-comments -m common -d lib/ src/",
-    "prepublish": "npm run compile"
+    "compile": "babel --no-comments --ignore=/__tests__/ -m common -d lib/ src/",
+    "prepublish": "npm run compile",
+    "test": "jest"
   },
   "keywords": [
     "flux",
@@ -14,7 +15,8 @@
   "author": "Andrea Pavoni",
   "license": "MIT",
   "devDependencies": {
-    "babel": "^5.6.23"
+    "babel": "^5.6.23",
+    "jest-cli": "^0.4.16"
   },
   "dependencies": {
     "core-js": "^0.9.18",
