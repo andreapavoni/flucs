@@ -1,8 +1,9 @@
 import MyActions from '../actions/MyActions.es6'
-import {createStore} from 'yafi'
+import {Store} from 'yafi'
 
-class MyStore {
+class MyStore extends Store {
   constructor() {
+    super()
     this.name = ''
 
     this.bindActions({
@@ -29,4 +30,4 @@ class MyStore {
   }
 }
 
-export default createStore(MyStore)
+export default new MyStore()

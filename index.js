@@ -1,7 +1,7 @@
 require('core-js/shim');
 
 module.exports = {
-  createStore: require('./lib/Store').createStore,
-  createActions: require('./lib/Actions').createActions,
-  Dispatcher: require('./lib/Dispatcher').Dispatcher
+  Store: require('./lib/Store'),
+  Actions: require('./lib/Actions'),
+  Dispatcher: require('./lib/Dispatcher')
 };

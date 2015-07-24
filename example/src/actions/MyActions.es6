@@ -1,7 +1,8 @@
-import {createActions} from 'yafi'
+import {Actions} from 'yafi'
 
-class MyActions {
+class MyActions  extends Actions {
   constructor() {
+    super()
     this.generateActions(
       'updateName'
     )
@@ -16,4 +17,4 @@ class MyActions {
   }
 }
 
-export default createActions(MyActions)
+export default new MyActions()

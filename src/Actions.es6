@@ -1,19 +1,17 @@
 import Dispatcher from './Dispatcher'
 import * as utils from './utils'
 
-
-let prototypeMethods = {
-  generateActions: function(...actions) {
-    actions.forEach((action) => {
-      this[action] = (payload) => {
-        this.dispatch(action, payload)
-      }
+export default class Actions {
+  constructor() {
+    // for some reason, we need to re-bind subclass methods to its own instance,
+    // otherwise it will not recognize its `this`
+    let methods = utils.getInstanceMethods(this.__proto__, true)
+    Object.keys(methods).forEach((method) => {
+      this[method] = methods[method].bind(this)
     })
   }
-}
 
-let protoMethods = {
-  dispatch: function(action, payload, namespace) {
+  dispatch(action, payload, namespace) {
     // allow a different prefix/namespace rather than decorated-class name
     let prefix = (!!namespace) ? namespace : this.constructor.name
 
@@ -22,19 +20,12 @@ let protoMethods = {
       payload: payload
     })
   }
-}
 
-export function createActions(klass) {
-  let methods = Object.assign(
-    utils.getInstanceMethods(klass),
-    protoMethods
-  )
-  Object.assign(klass.prototype, prototypeMethods)
-
-  let decorated = new klass()
-  Object.keys(methods).forEach((method) => {
-    decorated[method] = methods[method].bind(decorated)
-  })
-
-  return decorated
+  generateActions(...actions) {
+    actions.forEach((action) => {
+      this[action] = (payload) => {
+        this.dispatch(action, payload)
+      }
+    })
+  }
 }
