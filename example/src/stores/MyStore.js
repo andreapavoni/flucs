@@ -1,4 +1,4 @@
-import MyActions from '../actions/MyActions.es6'
+import MyActions from '../actions/MyActions'
 import {Store} from 'yafi'
 
 class MyStore extends Store {

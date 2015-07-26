@@ -20457,13 +20457,13 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _storesMyStoreEs6 = __webpack_require__(158);
+	var _storesMyStore = __webpack_require__(158);
 
-	var _storesMyStoreEs62 = _interopRequireDefault(_storesMyStoreEs6);
+	var _storesMyStore2 = _interopRequireDefault(_storesMyStore);
 
-	var _actionsMyActionsEs6 = __webpack_require__(159);
+	var _actionsMyActions = __webpack_require__(159);
 
-	var _actionsMyActionsEs62 = _interopRequireDefault(_actionsMyActionsEs6);
+	var _actionsMyActions2 = _interopRequireDefault(_actionsMyActions);
 
 	var App = (function (_React$Component) {
 	  _inherits(App, _React$Component);
@@ -20474,24 +20474,24 @@
 	    _get(Object.getPrototypeOf(App.prototype), 'constructor', this).call(this, props);
 
 	    this.state = {
-	      name: _storesMyStoreEs62['default'].getState().name
+	      name: _storesMyStore2['default'].getState().name
 	    };
 	  }
 
 	  _createClass(App, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      _storesMyStoreEs62['default'].addChangeListener(this.onChange.bind(this));
+	      _storesMyStore2['default'].addChangeListener(this.onChange.bind(this));
 	    }
 	  }, {
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
-	      _storesMyStoreEs62['default'].removeChangeListener(this.onChange.bind(this));
+	      _storesMyStore2['default'].removeChangeListener(this.onChange.bind(this));
 	    }
 	  }, {
 	    key: 'onChange',
 	    value: function onChange() {
-	      this.setState({ name: _storesMyStoreEs62['default'].getState().name });
+	      this.setState({ name: _storesMyStore2['default'].getState().name });
 	    }
 	  }, {
 	    key: 'render',
@@ -20499,16 +20499,16 @@
 	      return _react2['default'].createElement(
 	        'div',
 	        null,
-	        _react2['default'].createElement('input', { type: 'text', placeholder: 'Enter some text here', value: this.state.name, name: 'url', onChange: _actionsMyActionsEs62['default'].updateName, autofocus: true }),
+	        _react2['default'].createElement('input', { type: 'text', placeholder: 'Enter some text here', value: this.state.name, name: 'url', onChange: _actionsMyActions2['default'].updateName, autofocus: true }),
 	        _react2['default'].createElement(
 	          'span',
-	          { onClick: _actionsMyActionsEs62['default'].anotherAction },
+	          { onClick: _actionsMyActions2['default'].anotherAction },
 	          'Text is: ',
 	          this.state.name
 	        ),
 	        _react2['default'].createElement(
 	          'button',
-	          { onClick: _actionsMyActionsEs62['default'].reallyAnotherAction },
+	          { onClick: _actionsMyActions2['default'].reallyAnotherAction },
 	          'Click Me!'
 	        )
 	      );
@@ -20541,9 +20541,9 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-	var _actionsMyActionsEs6 = __webpack_require__(159);
+	var _actionsMyActions = __webpack_require__(159);
 
-	var _actionsMyActionsEs62 = _interopRequireDefault(_actionsMyActionsEs6);
+	var _actionsMyActions2 = _interopRequireDefault(_actionsMyActions);
 
 	var _yafi = __webpack_require__(160);
 

@@ -1,3 +1,5 @@
 gists/
 node_modules/
 lib/
+npm-debug.log
+coverage/

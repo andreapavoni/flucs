@@ -1,6 +1,6 @@
 import React from 'react'
-import MyStore from '../stores/MyStore.es6'
-import MyActions from '../actions/MyActions.es6'
+import MyStore from '../stores/MyStore'
+import MyActions from '../actions/MyActions'
 
 export default class App extends React.Component {
   constructor(props){

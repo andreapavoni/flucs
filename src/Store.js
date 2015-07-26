@@ -26,16 +26,18 @@ export default class Store extends EventEmitter {
     // later inside some store callback, you can use:
     // this.dispatcher.waitFor([AnotherStore.dispatchToken])
     this.dispatchToken = Dispatcher.register((action) => {
-      this[bindings[action.actionType]](action.payload)
+      if (!!this[bindings[action.actionType]]) {
+        this[bindings[action.actionType]](action.payload)
+      }
     })
   }
 
-  dispatcher() { return Dispatcher }
+  get dispatcher() { return Dispatcher }
 
   getState() {
     let state = {}
     Object.keys(this).forEach((prop) => {
-      if (prop !== 'state' || prop !== '_events') {
+      if (prop !== 'state' && prop !== '_events') {
         state[prop] = this[prop]
       }
     })
