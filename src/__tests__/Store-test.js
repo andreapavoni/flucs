@@ -4,30 +4,11 @@ jest.dontMock('../utils')
 
 const Store = require('../Store')
 
-class MyTestStore extends Store {
-  constructor() {
-    super()
-    this.customNameCallback = jest.genMockFn().mockImpl(function() {})
-    this.autoMapped = jest.genMockFn().mockImpl(function() {})
-    this.anotherCustomCallback = jest.genMockFn().mockImpl(function() {})
-
-    this.bindActions({
-      'SomeActions': { // prefix
-        'customName': 'customNameCallback', // 1:1 mapping
-        '*': ['autoMapped'] // auto mapping
-      },
-      'CustomPrefix': {
-        'anotherCustomName': 'anotherCustomCallback'
-      }
-    })
-  }
-}
-
 describe('Store', () => {
   var MyStore, callback
 
   beforeEach(() => {
-    MyStore = new MyTestStore()
+    MyStore = new Store()
     callback = jest.genMockFunction()
   })
 
@@ -71,53 +52,44 @@ describe('Store', () => {
 
   describe('changeEventName()', () => {
     it('returns "$storeName change"', function() {
-      expect(MyStore.changeEventName()).toBe('MyTestStore change')
+      expect(MyStore.changeEventName()).toBe('Store change')
     })
   })
 
   describe('bindActions()', () => {
-    it('binds a custom callback name for a given action identifier', function() {
-      MyStore.dispatcher.dispatch({
-        actionType: 'SomeActions.customName',
-        payload: {a: 1}
-      })
+    var dispatched = {actionType: 'MyActions.custom', payload: {a: 1}}
 
-      expect(MyStore.customNameCallback).toBeCalled()
-      expect(MyStore.customNameCallback.mock.calls.length).toBe(1)
+    beforeEach(() => {
+      MyStore.callback = jest.genMockFn()
+    })
+
+    it('binds a custom callback name for a given action identifier', function() {
+      MyStore.bindActions({'MyActions': {'custom': 'callback'}})
+      MyStore.dispatcher.dispatch(dispatched)
+      expect(MyStore.callback).toBeCalled()
+      expect(MyStore.callback.mock.calls.length).toBe(1)
     })
 
     it('automatically binds a callback with same name of the given action', function() {
-      MyStore.dispatcher.dispatch({
-        actionType: 'SomeActions.autoMapped',
-        payload: {a: 1}
-      })
-
-      expect(MyStore.autoMapped).toBeCalled()
-      expect(MyStore.autoMapped.mock.calls.length).toBe(1)
+      let autoDispatched = {actionType: 'MyActions.callback', payload: {a: 1}}
+      MyStore.bindActions({'MyActions': {'*': ['callback']}})
+      MyStore.dispatcher.dispatch(autoDispatched)
+      expect(MyStore.callback).toBeCalled()
+      expect(MyStore.callback.mock.calls.length).toBe(1)
     })
 
     it('binds to actions with a custom prefix', function() {
-      MyStore.dispatcher.dispatch({
-        actionType: 'CustomPrefix.anotherCustomName',
-        payload: {a: 1}
-      })
-
-      expect(MyStore.anotherCustomCallback).toBeCalled()
-      expect(MyStore.anotherCustomCallback.mock.calls.length).toBe(1)
+      let customPrefix = {actionType: 'CustomPrefix.custom', payload: {a: 1}}
+      MyStore.bindActions({'CustomPrefix': {'custom': 'callback'}})
+      MyStore.dispatcher.dispatch(customPrefix)
+      expect(MyStore.callback).toBeCalled()
+      expect(MyStore.callback.mock.calls.length).toBe(1)
     })
 
     it('ignores unregistered prefix.action', function() {
-      MyStore.dispatcher.dispatch({
-        actionType: 'SomeActions.anotherCustomName',
-        payload: {a: 1}
-      })
-
-      expect(MyStore.anotherCustomCallback).not.toBeCalled()
-      expect(MyStore.anotherCustomCallback.mock.calls.length).toBe(0)
-      expect(MyStore.autoMapped).not.toBeCalled()
-      expect(MyStore.autoMapped.mock.calls.length).toBe(0)
-      expect(MyStore.customNameCallback).not.toBeCalled()
-      expect(MyStore.customNameCallback.mock.calls.length).toBe(0)
+      MyStore.dispatcher.dispatch(dispatched)
+      expect(MyStore.callback).not.toBeCalled()
+      expect(MyStore.callback.mock.calls.length).toBe(0)
     })
   })
 })

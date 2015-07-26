@@ -5,7 +5,7 @@ export default class Actions {
   constructor() {
     // for some reason, we need to re-bind subclass methods to its own instance,
     // otherwise it will not recognize its `this`
-    let methods = utils.getInstanceMethods(this.__proto__, true)
+    let methods = utils.getPrototypeMethods(this.__proto__, true)
     Object.keys(methods).forEach((method) => {
       this[method] = methods[method].bind(this)
     })

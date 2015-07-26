@@ -16,9 +16,10 @@ _TODO_
 See [example](example/)
 
 ## TODO
-* tests
+* add better description to README
 * add _Usage_ to README
-* write more examples:
+* publish to [NPM](https://npmjs.org)
+* write better examples:
   * in ES5
   * [http://todomvc.com](http://todomvc.com) :-)
 * find a better name

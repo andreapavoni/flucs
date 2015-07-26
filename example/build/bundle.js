@@ -24777,7 +24777,7 @@
 
 	    _classCallCheck(this, Actions);
 
-	    var methods = utils.getInstanceMethods(this.__proto__, true);
+	    var methods = utils.getPrototypeMethods(this.__proto__, true);
 	    Object.keys(methods).forEach(function (method) {
 	      _this[method] = methods[method].bind(_this);
 	    });
@@ -24825,10 +24825,10 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.getInstanceMethods = getInstanceMethods;
+	exports.getPrototypeMethods = getPrototypeMethods;
 	function NoopClass() {}
 
-	function getInstanceMethods(klass) {
+	function getPrototypeMethods(klass) {
 	  var isPrototype = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
 	  var excluded = Object.getOwnPropertyNames(NoopClass.prototype);
