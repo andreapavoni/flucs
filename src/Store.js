@@ -17,8 +17,12 @@ function parseBindingsTree(bindings) {
  return result
 }
 
+var _state = {}
+
 export default class Store extends EventEmitter {
-  constructor() { super() }
+  constructor() {
+    super()
+  }
 
   bindActions(opts) {
     let bindings = parseBindingsTree(opts)
@@ -32,24 +36,19 @@ export default class Store extends EventEmitter {
     })
   }
 
+  setInitialState(state = {}) {
+    _state = state
+  }
+
   get dispatcher() { return Dispatcher }
 
   getState() {
-    let state = {}
-    Object.keys(this).forEach((prop) => {
-      if (prop !== 'state' && prop !== '_events') {
-        state[prop] = this[prop]
-      }
-    })
-    return state
+    return _state
   }
 
-  setState(obj) {
-    Object.keys(obj).forEach((prop) => {
-      this[prop] = obj[prop]
-    })
+  setState(state={}) {
+    Object.assign(_state, state)
     this.emitChange()
-    return this
   }
 
   changeEventName() {

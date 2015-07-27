@@ -1,3 +1,5 @@
+require('core-js/shim')
+
 jest.dontMock('../Store')
 jest.dontMock('../Dispatcher')
 jest.dontMock('../utils')
@@ -56,8 +58,19 @@ describe('Store', () => {
     })
   })
 
+  describe('setInitialState()', () => {
+    it('sets the state', function() {
+      MyStore.setInitialState({a: 1})
+      expect(MyStore.getState()).toEqual({a: 1})
+    })
+
+    it('sets default empty object when no state is provided', function() {
+      MyStore.setInitialState()
+      expect(MyStore.getState()).toEqual({})
+    })
+  })
+
   describe('bindActions()', () => {
-    // var dispatched = {actionType: 'MyActions.custom', payload: {a: 1}}
     beforeEach(() => {
       MyStore.callback = jest.genMockFn()
     })
