@@ -57,36 +57,37 @@ describe('Store', () => {
   })
 
   describe('bindActions()', () => {
-    var dispatched = {actionType: 'MyActions.custom', payload: {a: 1}}
-
+    // var dispatched = {actionType: 'MyActions.custom', payload: {a: 1}}
     beforeEach(() => {
       MyStore.callback = jest.genMockFn()
     })
 
-    it('binds a custom callback name for a given action identifier', function() {
+    it('binds custom callback name for a given action', function() {
+      let dispatched = {actionType: 'MyActions.custom', payload: {a: 1}}
       MyStore.bindActions({'MyActions': {'custom': 'callback'}})
       MyStore.dispatcher.dispatch(dispatched)
       expect(MyStore.callback).toBeCalled()
       expect(MyStore.callback.mock.calls.length).toBe(1)
     })
 
-    it('automatically binds a callback with same name of the given action', function() {
-      let autoDispatched = {actionType: 'MyActions.callback', payload: {a: 1}}
+    it('binds callbacks with same name of the given actions', function() {
+      let dispatched = {actionType: 'MyActions.callback', payload: {a: 1}}
       MyStore.bindActions({'MyActions': {'*': ['callback']}})
-      MyStore.dispatcher.dispatch(autoDispatched)
+      MyStore.dispatcher.dispatch(dispatched)
       expect(MyStore.callback).toBeCalled()
       expect(MyStore.callback.mock.calls.length).toBe(1)
     })
 
-    it('binds to actions with a custom prefix', function() {
-      let customPrefix = {actionType: 'CustomPrefix.custom', payload: {a: 1}}
+    it('binds callbacks to actions with a custom prefix', function() {
+      let dispatched = {actionType: 'CustomPrefix.custom', payload: {a: 1}}
       MyStore.bindActions({'CustomPrefix': {'custom': 'callback'}})
-      MyStore.dispatcher.dispatch(customPrefix)
+      MyStore.dispatcher.dispatch(dispatched)
       expect(MyStore.callback).toBeCalled()
       expect(MyStore.callback.mock.calls.length).toBe(1)
     })
 
     it('ignores unregistered prefix.action', function() {
+      let dispatched = {actionType: 'MyActions.custom', payload: {a: 1}}
       MyStore.dispatcher.dispatch(dispatched)
       expect(MyStore.callback).not.toBeCalled()
       expect(MyStore.callback.mock.calls.length).toBe(0)
