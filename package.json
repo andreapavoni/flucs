@@ -26,7 +26,8 @@
   "jest": {
     "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",
     "unmockedModulePathPatterns": [
-      "<rootDir>/node_modules/flux"
+      "<rootDir>/node_modules/flux",
+      "<rootDir>/node_modules/core-js"
     ]
   }
 }
