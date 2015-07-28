@@ -9,82 +9,70 @@
  * TodoStore-test
  */
 
-jest.dontMock('../../constants/TodoConstants');
-jest.dontMock('../TodoStore');
-jest.dontMock('object-assign');
+jest.autoMockOff();
 
 describe('TodoStore', function() {
-
-  var TodoConstants = require('../../constants/TodoConstants');
-  var AppDispatcher;
+  var TodoActions = require('../../actions/TodoActions');
   var TodoStore;
-  var callback;
-
-  // mock actions
-  var actionTodoCreate = {
-    actionType: TodoConstants.TODO_CREATE,
-    text: 'foo'
-  };
-  var actionTodoDestroy = {
-    actionType: TodoConstants.TODO_DESTROY,
-    id: 'replace me in test'
-  };
+  var actionCreate = {actionType: 'TodoActions.create', payload: 'foo'};
 
   beforeEach(function() {
-    AppDispatcher = require('../../dispatcher/AppDispatcher');
     TodoStore = require('../TodoStore');
-    callback = AppDispatcher.register.mock.calls[0][0];
-  });
-
-  it('registers a callback with the dispatcher', function() {
-    expect(AppDispatcher.register.mock.calls.length).toBe(1);
   });
 
   it('should initialize with no to-do items', function() {
-    var all = TodoStore.getAll();
+    var all = TodoStore.getState().todos;
     expect(all).toEqual({});
   });
 
   it('creates a to-do item', function() {
-    callback(actionTodoCreate);
-    var all = TodoStore.getAll();
+    TodoStore.dispatcher.dispatch(actionCreate);
+    var all = TodoStore.getState().todos;
     var keys = Object.keys(all);
+
     expect(keys.length).toBe(1);
     expect(all[keys[0]].text).toEqual('foo');
   });
 
   it('destroys a to-do item', function() {
-    callback(actionTodoCreate);
-    var all = TodoStore.getAll();
+    TodoStore.dispatcher.dispatch(actionCreate);
+    var all = TodoStore.getState().todos;
     var keys = Object.keys(all);
+
     expect(keys.length).toBe(1);
-    actionTodoDestroy.id = keys[0];
-    callback(actionTodoDestroy);
+
+    var actionDestroy = {
+      actionType: 'TodoActions.destroy',
+      payload: keys[0]
+    };
+    TodoStore.dispatcher.dispatch(actionDestroy);
+    all = TodoStore.getState().todos;
+    keys = Object.keys(all);
+
     expect(all[keys[0]]).toBeUndefined();
   });
 
   it('can determine whether all to-do items are complete', function() {
     var i = 0;
     for (; i < 3; i++) {
-      callback(actionTodoCreate);
+      TodoStore.dispatcher.dispatch(actionCreate);
     }
-    expect(Object.keys(TodoStore.getAll()).length).toBe(3);
+    expect(Object.keys(TodoStore.getState().todos).length).toBe(3);
     expect(TodoStore.areAllComplete()).toBe(false);
 
-    var all = TodoStore.getAll();
-    for (key in all) {
-      callback({
-        actionType: TodoConstants.TODO_COMPLETE,
-        id: key
-      });
-    }
+    var actionCompleteAll = {
+      actionType: 'TodoActions.toggleCompleteAll'
+    };
+    TodoStore.dispatcher.dispatch(actionCompleteAll);
     expect(TodoStore.areAllComplete()).toBe(true);
 
-    callback({
-      actionType: TodoConstants.TODO_UNDO_COMPLETE,
-      id: key
-    });
+    var all = TodoStore.getState().todos;
+    var keys = Object.keys(all);
+    var actionComplete = {
+      actionType: 'TodoActions.toggleComplete',
+      payload: all[keys[0]]
+    };
+    TodoStore.dispatcher.dispatch(actionComplete);
     expect(TodoStore.areAllComplete()).toBe(false);
   });
-
 });
