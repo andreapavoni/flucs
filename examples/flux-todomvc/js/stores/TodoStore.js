@@ -9,7 +9,7 @@ class TodoStore extends Store {
     this.bindActions({
       'TodoActions': {
         '*': [
-          'create', 'update', 'toggleCompleteAll', 'updateText',
+          'create', 'toggleCompleteAll', 'updateText',
           'destroyCompleted', 'destroy', 'toggleComplete'
         ]
       }
@@ -34,31 +34,24 @@ class TodoStore extends Store {
     this.setState({todos})
   }
 
-  update(id, updates) {
+  updateText(todo) {
     let todos = this.getState().todos
-    todos[id] = Object.assign({}, todos[id], updates)
+    todos[todo.id] = Object.assign({}, {text: todo.text})
     this.setState({todos})
-  }
-
-  updateText(updates) {
-    this.update(updates.id, {text: updates.text})
   }
 
   toggleCompleteAll() {
     let todos = this.getState().todos
     for (let id in todos) {
-      this.update(id, {complete: !todos[id].complete})
+      todos[id] = Object.assign({}, {complete: !todos[id].complete})
     }
+    this.setState({todos})
   }
 
   toggleComplete(todo) {
-    this.update(todo.id, {complete: !todo.complete})
-  }
-
-  updateAll(updates) {
-    for (let id in this.getState().todos) {
-      this.update(id, updates)
-    }
+    let todos = this.getState().todos
+    todos[todo.id] = Object.assign({}, {complete: !todo.complete})
+    this.setState({todos})
   }
 
   destroy(id) {
@@ -71,9 +64,10 @@ class TodoStore extends Store {
     let todos = this.getState().todos
     for (let id in todos) {
       if (todos[id].complete) {
-        this.destroy(id)
+        delete todos[id]
       }
     }
+    this.setState({todos})
   }
 }
 

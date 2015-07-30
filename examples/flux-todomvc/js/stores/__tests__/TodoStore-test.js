@@ -52,6 +52,31 @@ describe('TodoStore', function() {
     expect(all[keys[0]]).toBeUndefined();
   });
 
+  it('can destroy all completed items', function() {
+    var i = 0;
+    for (; i < 2; i++) {
+      TodoStore.dispatcher.dispatch(actionCreate);
+    }
+    var all = TodoStore.getState().todos;
+    var keys = Object.keys(all);
+    expect(keys.length).toBe(2);
+
+    var actionComplete = {
+      actionType: 'TodoActions.toggleComplete',
+      payload: all[keys[0]]
+    };
+    TodoStore.dispatcher.dispatch(actionComplete);
+
+    var actionDestroyCompleted = {
+      actionType: 'TodoActions.destroyCompleted'
+    };
+    TodoStore.dispatcher.dispatch(actionDestroyCompleted);
+    all = TodoStore.getState().todos;
+    keys = Object.keys(all);
+
+    expect(keys.length).toBe(1);
+  });
+
   it('can determine whether all to-do items are complete', function() {
     var i = 0;
     for (; i < 3; i++) {
