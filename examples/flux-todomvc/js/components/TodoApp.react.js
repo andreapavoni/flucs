@@ -20,15 +20,18 @@ var TodoStore = require('../stores/TodoStore');
 
 var TodoApp = React.createClass({
   getInitialState: function() {
-    return {todos: TodoStore.getState().todos};
+    return {
+      todos: TodoStore.getState().todos,
+      areAllComplete: TodoStore.areAllComplete(),
+    };
   },
 
   componentDidMount: function() {
-    TodoStore.addChangeListener(this._onChange).bind(this);
+    TodoStore.addChangeListener(this._onChange);
   },
 
   componentWillUnmount: function() {
-    TodoStore.removeChangeListener(this._onChange).bind(this);
+    TodoStore.removeChangeListener(this._onChange);
   },
 
   /**

@@ -1,17 +1,16 @@
-import {Actions} from 'yafi'
+var Actions = require('yafi').Actions;
 
-class TodoActions extends Actions {
-  constructor() {
-    super()
-    this.generateActions(
-      'create', 'toggleCompleteAll', 'toggleComplete',
-      'destroyCompleted', 'destroy'
-    )
+var TodoActions = function() {
+  this.generateActions(
+    'create', 'toggleCompleteAll', 'toggleComplete',
+    'destroyCompleted', 'destroy'
+  );
+};
+
+TodoActions.prototype = {
+  updateText: function(id, text) {
+    this.dispatch('updateText', {id: id, text: text});
   }
+};
 
-  updateText(id, text) {
-    this.dispatch('updateText', {id, text})
-  }
-}
-
-export default new TodoActions()
+module.exports = Actions.createFromObject(TodoActions);

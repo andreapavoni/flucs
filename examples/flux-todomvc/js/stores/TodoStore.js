@@ -1,74 +1,79 @@
-import {Store} from 'yafi'
+var Store = require('yafi').Store;
 
-class TodoStore extends Store {
-  constructor() {
-    super()
+var TodoStore = function() {
+  this.setInitialState({todos: {}});
 
-    this.setInitialState({todos: {}})
-
-    this.bindActions({
-      'TodoActions': {
-        '*': [
-          'create', 'toggleCompleteAll', 'updateText',
-          'destroyCompleted', 'destroy', 'toggleComplete'
-        ]
-      }
-    })
-  }
-
-  areAllComplete() {
-    let todos = this.getState().todos
-    for (let id in todos) {
-      if (!todos[id].complete) { return false }
+  this.bindActions({
+    'TodoActions': {
+      '*': [
+        'create', 'toggleCompleteAll', 'updateText',
+        'destroyCompleted', 'destroy', 'toggleComplete'
+      ]
     }
-    return true
-  }
+  });
+}
 
-  create(text) {
+ TodoStore.prototype = {
+   areAllComplete: function() {
+    var todos = this.getState().todos;
+    for (var id in todos) {
+      if (!todos[id].complete) { return false; }
+    }
+    return true;
+   },
+
+  create: function(text) {
     // Hand waving here -- not showing how this interacts with XHR or persistent
     // server-side storage.
     // Using the current timestamp + random number in place of a real id.
-    let id = (+new Date() + Math.floor(Math.random() * 999999)).toString(36)
-    let todos = this.getState().todos
-    todos[id] = {id: id, complete: false, text: text}
-    this.setState({todos})
-  }
+    var id = (+new Date() + Math.floor(Math.random() * 999999)).toString(36);
+    var todos = this.getState().todos;
+    todos[id] = {id: id, complete: false, text: text};
+    this.setState({todos: todos});
+  },
 
-  updateText(todo) {
-    let todos = this.getState().todos
-    todos[todo.id] = Object.assign({}, {text: todo.text})
-    this.setState({todos})
-  }
+  updateText: function(todo) {
+    var todos = this.getState().todos;
+    todos[todo.id].text = todo.text;
+    this.setState({todos: todos});
+  },
 
-  toggleCompleteAll() {
-    let todos = this.getState().todos
-    for (let id in todos) {
-      todos[id] = Object.assign({}, {complete: !todos[id].complete})
-    }
-    this.setState({todos})
-  }
+  toggleCompleteAll: function() {
+    var todos = this.getState().todos;
+    var areAllComplete = this.areAllComplete();
 
-  toggleComplete(todo) {
-    let todos = this.getState().todos
-    todos[todo.id] = Object.assign({}, {complete: !todo.complete})
-    this.setState({todos})
-  }
-
-  destroy(id) {
-    let todos = this.getState().todos
-    delete todos[id]
-    this.setState({todos})
-  }
-
-  destroyCompleted() {
-    let todos = this.getState().todos
-    for (let id in todos) {
-      if (todos[id].complete) {
-        delete todos[id]
+    for (var id in todos) {
+      if (areAllComplete) {
+        todos[id].complete = false;
+      } else if (!todos[id].complete) {
+        todos[id].complete = true;
       }
     }
-    this.setState({todos})
+
+    this.setState({todos: todos});
+  },
+
+  toggleComplete: function(todo) {
+    var todos = this.getState().todos;
+    todos[todo.id].complete = !todo.complete;
+    this.setState({todos: todos});
+  },
+
+  destroy: function(id) {
+    var todos = this.getState().todos;
+    delete todos[id];
+    this.setState({todos: todos});
+  },
+
+  destroyCompleted: function() {
+    var todos = this.getState().todos;
+    for (var id in todos) {
+      if (todos[id].complete) {
+        delete todos[id];
+      }
+    }
+    this.setState({todos: todos});
   }
 }
 
-export default new TodoStore()
+module.exports = Store.createFromObject(TodoStore);

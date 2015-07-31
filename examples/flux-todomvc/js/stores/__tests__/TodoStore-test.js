@@ -12,7 +12,6 @@
 jest.autoMockOff();
 
 describe('TodoStore', function() {
-  var TodoActions = require('../../actions/TodoActions');
   var TodoStore;
   var actionCreate = {actionType: 'TodoActions.create', payload: 'foo'};
 

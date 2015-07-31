@@ -15,7 +15,7 @@
 _TODO_
 
 ## Example
-See [examples](examples/). There's a porting of the [original flux todomvc example](https://github.com/facebook/flux/tree/master/examples/flux-todomvca) that uses `yafi` to define `TodoActions` and `TodoStore`, all other files were left untouched (except `TodoApp` component, because of a little change I made to `TodoStore`).
+See [examples](examples/). There are two portings of the [original flux todomvc example](https://github.com/facebook/flux/tree/master/examples/flux-todomvc) that use `yafi` to define `TodoActions` and `TodoStore`, all other files were left untouched whenever possible. There's an [example written in ES5](examples/flux-todomvc) and another [written in ES6](examples/flux-todomvc-es6). They're both tested as well.
 
 ## TODO
 * add better description to README

@@ -10,8 +10,8 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.(js|jsx|es6)$/,
-        loader: 'babel',
+        test: /\.(js|jsx)$/,
+        loader: 'jsx-loader',
         exclude: /(node_modules)/
       }
     ]
