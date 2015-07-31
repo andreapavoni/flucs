@@ -1,6 +1,6 @@
 # flucs: yet another Flux implementation
 
-A small, simple library to reduce boilerplate when using Facebook [Flux](https://github.com/facebook/flux).
+A small, simple library to reduce boilerplate when using [Flux](https://github.com/facebook/flux).
 Here there are some interesting points about it:
 
 * based on [Flux](https://github.com/facebook/flux)

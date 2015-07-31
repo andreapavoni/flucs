@@ -1,12 +1,19 @@
 {
   "name": "flucs",
-  "version": "0.1.0",
-  "description": "A small, simple library to reduce boilerplate when using Facebook Flux",
+  "version": "0.1.1",
+  "description": "A small, simple library to reduce boilerplate when using Flux",
   "main": "index.js",
   "keywords": [
     "flux",
-    "react"
+    "react",
+    "dispatcher"
   ],
+  "homepage": "https://github.com/nebulab/flucs",
+  "bugs": "https://github.com/nebulab/flucs/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nebulab/flucs"
+  },
   "author": "Andrea Pavoni",
   "license": "MIT",
   "devDependencies": {
