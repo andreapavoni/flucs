@@ -1,5 +1,6 @@
 import {EventEmitter} from 'events'
 import Dispatcher from './Dispatcher'
+import * as utils from './utils'
 
 function parseBindingsTree(bindings) {
  let result = {}
@@ -20,6 +21,10 @@ function parseBindingsTree(bindings) {
 var _state = {}
 
 export default class Store extends EventEmitter {
+  static createFromObject(obj) {
+    return utils.extendObjectWithClass(obj, this)
+  }
+
   constructor() {
     super()
   }

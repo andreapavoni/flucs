@@ -2,6 +2,10 @@ import Dispatcher from './Dispatcher'
 import * as utils from './utils'
 
 export default class Actions {
+  static createFromObject(obj) {
+    return utils.extendObjectWithClass(obj, this)
+  }
+
   constructor() {
     // for some reason, we need to re-bind subclass methods to its own instance,
     // otherwise it will not recognize its `this`

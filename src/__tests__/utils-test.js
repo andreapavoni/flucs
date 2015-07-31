@@ -1,6 +1,7 @@
-jest.dontMock('../utils')
+require('core-js/shim')
 
-const utils = require('../utils')
+jest.dontMock('../utils')
+var utils = require('../utils')
 
 class TestClass {
   constructor() {}
@@ -16,5 +17,13 @@ describe('getPrototypeMethods()', () => {
   it('returns prototype methods of an instance', function() {
     let methods = utils.getPrototypeMethods((new TestClass()).__proto__, true)
     expect(Object.keys(methods)).toEqual(['someFunc'])
+  })
+})
+
+describe('extendObjectWithClass()', () => {
+  it('decorates given object with class prototype', function() {
+    let obj = function() {}
+    obj = utils.extendObjectWithClass(obj, TestClass)
+    expect(typeof obj.someFunc).toBe('function')
   })
 })

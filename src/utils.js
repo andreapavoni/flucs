@@ -12,3 +12,9 @@ export function getPrototypeMethods(klass, isPrototype=false) {
     return result
   }, {})
 }
+
+export function extendObjectWithClass(obj, klass) {
+  obj.prototype = Object.assign((new klass()), obj.prototype)
+  obj.prototype.constructor = obj
+  return new obj()
+}

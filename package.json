@@ -18,8 +18,8 @@
     "flux": "^2.0.3"
   },
   "scripts": {
-    "compile": "babel --no-comments --ignore=/__tests__/ -m common -d lib/ src/",
-    "prepublish": "npm run compile",
+    "build": "babel --no-comments --ignore=/__tests__/ -m common -d lib/ src/",
+    "prepublish": "npm run build",
     "test": "jest",
     "dtest": "jest --coverage --verbose"
   },
