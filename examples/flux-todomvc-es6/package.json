@@ -1,0 +1,27 @@
+{
+  "name": "todomvc-yafi",
+  "version": "0.0.1",
+  "description": "Example Flux architecture with yafi.",
+  "repository": "https://github.com/apeacox/yafi",
+  "main": "js/app.js",
+  "dependencies": {
+    "react": "^0.13.3",
+    "yafi": "file:../../"
+  },
+  "devDependencies": {
+    "babel-jest": "^5.3.0",
+    "jest-cli": "^0.4.17"
+  },
+  "scripts": {
+    "build": "webpack --progress --display-error-details --stats --config ./webpack.config.js",
+    "test": "jest"
+  },
+  "author": "Andrea Pavoni",
+  "jest": {
+    "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",
+    "unmockedModulePathPatterns": [
+      "<rootDir>/node_modules/flux",
+      "<rootDir>/node_modules/core-js"
+    ]
+  }
+}
