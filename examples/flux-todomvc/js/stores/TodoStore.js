@@ -13,14 +13,14 @@ var TodoStore = function() {
   });
 }
 
- TodoStore.prototype = {
-   areAllComplete: function() {
+TodoStore.prototype = {
+  areAllComplete: function() {
     var todos = this.getState().todos;
     for (var id in todos) {
       if (!todos[id].complete) { return false; }
     }
     return true;
-   },
+  },
 
   create: function(text) {
     // Hand waving here -- not showing how this interacts with XHR or persistent
