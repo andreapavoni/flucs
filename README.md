@@ -1,4 +1,4 @@
-# yafi: yet another Flux implementation
+# flucs: yet another Flux implementation
 
 A small, simple library to reduce boilerplate when using Facebook [Flux](https://github.com/facebook/flux).
 Here there are some interesting points about it:
@@ -12,7 +12,7 @@ Here there are some interesting points about it:
 * helpers to easily support ES5 without pain, it already has shims through [core-js](https://github.com/zloirock/core-js)
 
 ## Install
-`npm install yafi`
+`npm install flucs`
 
 ## Usage
 You can either use ES5 or ES6 syntax, it supports both.
@@ -20,7 +20,7 @@ You can either use ES5 or ES6 syntax, it supports both.
 ### ES6
 #### Actions
 ```
-import {Actions} from 'yafi'
+import {Actions} from 'flucs'
 
 class TodoActions extends Actions {
   constructor() {
@@ -82,7 +82,7 @@ That's it! You don't need to create constants or some `AppDispatcher`: `Actions`
 ### ES5
 #### Actions
 ```
-var Actions = require('yafi').Actions;
+var Actions = require('flucs').Actions;
 
 // Constructor
 var TodoActions = function() {
@@ -102,7 +102,7 @@ module.exports = Actions.createFromObject(TodoActions);
 
 #### Store
 ```
-var Store = require('yafi').Store;
+var Store = require('flucs').Store;
 
 // Constructor
 var TodoStore = function() {
@@ -136,8 +136,7 @@ module.exports = Store.createFromObject(TodoStore);
 ```
 
 ## Examples
-See [examples](examples/). There are two portings of the [original flux todomvc example](https://github.com/facebook/flux/tree/master/examples/flux-todomvc) that use `yafi`, all other files (eg: components) were left untouched whenever possible. There's an [example written in ES5](examples/flux-todomvc) and another [written in ES6](examples/flux-todomvc-es6). They're both tested as well.
+See [examples](examples/). There are two portings of the [original flux todomvc example](https://github.com/facebook/flux/tree/master/examples/flux-todomvc) that use `flucs`, all other files (eg: components) were left untouched whenever possible. There's an [example written in ES5](examples/flux-todomvc) and another [written in ES6](examples/flux-todomvc-es6). They're both tested as well.
 
 ## TODO
-* find a better name
 * _ideas and PRs are welcome_

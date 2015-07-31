@@ -1,4 +1,4 @@
-var Store = require('yafi').Store;
+var Store = require('flucs').Store;
 
 var TodoStore = function() {
   this.setInitialState({todos: {}});

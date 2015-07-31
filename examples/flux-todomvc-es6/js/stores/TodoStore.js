@@ -1,4 +1,4 @@
-import {Store} from 'yafi'
+import {Store} from 'flucs'
 
 class TodoStore extends Store {
   constructor() {

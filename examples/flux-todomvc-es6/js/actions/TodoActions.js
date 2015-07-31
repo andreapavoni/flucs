@@ -1,4 +1,4 @@
-import {Actions} from 'yafi'
+import {Actions} from 'flucs'
 
 class TodoActions extends Actions {
   constructor() {

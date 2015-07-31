@@ -1,4 +1,4 @@
-var Actions = require('yafi').Actions;
+var Actions = require('flucs').Actions;
 
 var TodoActions = function() {
   this.generateActions(

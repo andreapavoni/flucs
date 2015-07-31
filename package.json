@@ -1,7 +1,7 @@
 {
-  "name": "yafi",
+  "name": "flucs",
   "version": "0.1.0",
-  "description": "Simple wrapper for React Flux to dry things up ",
+  "description": "A small, simple library to reduce boilerplate when using Facebook Flux",
   "main": "index.js",
   "keywords": [
     "flux",
