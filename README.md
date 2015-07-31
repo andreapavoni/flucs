@@ -139,6 +139,5 @@ module.exports = Store.createFromObject(TodoStore);
 See [examples](examples/). There are two portings of the [original flux todomvc example](https://github.com/facebook/flux/tree/master/examples/flux-todomvc) that use `yafi`, all other files (eg: components) were left untouched whenever possible. There's an [example written in ES5](examples/flux-todomvc) and another [written in ES6](examples/flux-todomvc-es6). They're both tested as well.
 
 ## TODO
-* publish to [NPM](https://npmjs.org)
 * find a better name
 * _ideas and PRs are welcome_

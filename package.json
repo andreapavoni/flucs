@@ -1,6 +1,6 @@
 {
   "name": "yafi",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Simple wrapper for React Flux to dry things up ",
   "main": "index.js",
   "keywords": [
